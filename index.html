@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --code-bg: #0f172a;
+      --code-text: #f8fafc;
+      --accent-green: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Clean Header */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #eff6ff;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      margin-bottom: 0.5rem;
+      border: 1px solid #dbeafe;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Practical Tasks List */
+    .tasks-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .task-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .task-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .task-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .task-num {
+      background-color: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .btn-run {
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-run:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .task-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Code Snippet */
+    pre {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      font-family: 'Fira Code', Consolas, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      border: 1px solid #1e293b;
+    }
+
+    /* Output Console */
+    .console-card {
+      background-color: #0f172a;
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      border: 1px solid #1e293b;
+    }
+
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #334155;
+    }
+
+    .console-title {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .console-title::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-green);
+    }
+
+    .btn-clear {
+      background: transparent;
+      border: 1px solid #475569;
+      color: #94a3b8;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .btn-clear:hover {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
+    .console-screen {
+      font-family: 'Fira Code', Consolas, monospace;
+      font-size: 0.85rem;
+      color: #38bdf8;
+      min-height: 90px;
+      max-height: 200px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    .console-line {
+      margin-bottom: 0.25rem;
+    }
+
+    .console-line.success {
+      color: #4ade80;
+    }
+
+    .console-line.warn {
+      color: #facc15;
+    }
+
+    /* Webpage write area */
+    #webpageDisplay {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 1rem 1.25rem;
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      color: #1e3a8a;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+
+      <h1>JavaScript Practical Tasks</h1>
+      <p class="subtitle">Interactive implementation of variables, dialogs (alert, prompt, confirm), and console
+        outputs.</p>
+    </header>
+
+    <!-- Practical Tasks List -->
+    <div class="tasks-wrapper">
+
+      <!-- Practical Task 1 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 1</span>
+            Create variables for Student Name, Age, and Mark and print all three
+          </div>
+          <button class="btn-run" onclick="task1()">▶ Run Task 1</button>
+        </div>
+        <p class="task-desc">Stores student details in variables and prints them using <code>console.log()</code>.</p>
+        <pre><code>let studentName = "Alex Sharma";
+let studentAge = 21;
+let studentMark = 92.5;
+
+console.log("Student Name:", studentName);
+console.log("Student Age :", studentAge);
+console.log("Student Mark:", studentMark);</code></pre>
+      </div>
+
+      <!-- Practical Task 2 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 2</span>
+            Ask user's name using prompt() and display it using alert()
+          </div>
+          <button class="btn-run" onclick="task2()">▶ Run Task 2</button>
+        </div>
+        <p class="task-desc">Prompts the user to enter their name in a popup input box, then displays a welcome greeting
+          using <code>alert()</code>.</p>
+        <pre><code>let userName = prompt("Enter your name:");
+if (userName) {
+    alert("Welcome, " + userName + "!");
+}</code></pre>
+      </div>
+
+      <!-- Practical Task 3 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 3</span>
+            Ask user's age using prompt() and print it using console.log()
+          </div>
+          <button class="btn-run" onclick="task3()">▶ Run Task 3</button>
+        </div>
+        <p class="task-desc">Takes user's age input via <code>prompt()</code> and logs the value into the console.</p>
+        <pre><code>let userAge = prompt("Enter your age:");
+console.log("User Age entered:", userAge);</code></pre>
+      </div>
+
+      <!-- Practical Task 4 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 4</span>
+            Ask the user a question using confirm()
+          </div>
+          <button class="btn-run" onclick="task4()">▶ Run Task 4</button>
+        </div>
+        <p class="task-desc">Displays a confirmation box (OK / Cancel) and handles the Boolean result (<code>true</code>
+          / <code>false</code>).</p>
+        <pre><code>let isJavaScriptFun = confirm("Are you enjoying learning JavaScript?");
+if (isJavaScriptFun) {
+    console.log("User clicked OK (true)");
+} else {
+    console.log("User clicked Cancel (false)");
+}</code></pre>
+      </div>
+
+      <!-- Practical Task 5 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 5</span>
+            Ask user's name and display it on the webpage using document.writeln()
+          </div>
+          <button class="btn-run" onclick="task5()">▶ Run Task 5</button>
+        </div>
+        <p class="task-desc">Asks for user's name with <code>prompt()</code> and renders the greeting onto the document
+          page.</p>
+        <pre><code>let name = prompt("Enter your name to display on the webpage:");
+if (name) {
+    document.writeln("&lt;h2&gt;Hello, " + name + "! Welcome to JavaScript.&lt;/h2&gt;");
+}</code></pre>
+      </div>
+
+    </div>
+
+    <!-- Webpage Display for Task 5 output preview -->
+    <div id="webpageDisplay"></div>
+
+    <!-- Live Console Output Box -->
+    <div class="console-card">
+      <div class="console-header">
+        <div class="console-title">Live Action Output Console</div>
+        <button class="btn-clear" onclick="clearConsole()">Clear</button>
+      </div>
+      <div id="consoleScreen" class="console-screen">
+        <div class="console-line">> Click any "Run" button above to test the practical code interactively.</div>
+      </div>
+    </div>
+
+    <footer>
+      <p>JavaScript Basics </p>
+    </footer>
+  </div>
+
+  <!-- JavaScript Implementation -->
+  <script src="script.js"></script>
+  <script src="index.js"></script>
+
+  <!-- Interactive runner script -->
+  <script>
+    const screen = document.getElementById("consoleScreen");
+
+    function printToScreen(msg, type = "normal") {
+      const line = document.createElement("div");
+      line.className = "console-line " + type;
+      line.innerText = `> ${msg}`;
+      screen.appendChild(line);
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    function clearConsole() {
+      screen.innerHTML = '<div class="console-line">> Console cleared. Ready for next task.</div>';
+      document.getElementById("webpageDisplay").style.display = "none";
+    }
+
+    // Task 1: Student Details
+    function task1() {
+      let studentName = "Alex Sharma";
+      let studentAge = 21;
+      let studentMark = 92.5;
+
+      console.log("=== Task 1: Student Information ===");
+      console.log("Student Name:", studentName);
+      console.log("Student Age :", studentAge);
+      console.log("Student Mark:", studentMark);
+
+      printToScreen(`[Task 1 Output] Student Name: "${studentName}" | Age: ${studentAge} | Mark: ${studentMark}`, "success");
+    }
+
+    // Task 2: prompt() and alert()
+    function task2() {
+      let userName = prompt("Enter your name:");
+      if (userName) {
+        alert("Welcome, " + userName + "!");
+        printToScreen(`[Task 2 Output] alert("Welcome, ${userName}!") displayed successfully.`, "success");
+      } else {
+        printToScreen(`[Task 2 Output] prompt() cancelled or no name entered.`, "warn");
+      }
+    }
+
+    // Task 3: prompt() and console.log()
+    function task3() {
+      let userAge = prompt("Enter your age:");
+      if (userAge !== null && userAge.trim() !== "") {
+        console.log("User Age entered:", userAge);
+        printToScreen(`[Task 3 Output] console.log("User Age:", "${userAge}") logged to console.`, "success");
+      } else {
+        printToScreen(`[Task 3 Output] Age prompt was cancelled.`, "warn");
+      }
+    }
+
+    // Task 4: confirm()
+    function task4() {
+      let isJavaScriptFun = confirm("Are you enjoying learning JavaScript?");
+      if (isJavaScriptFun) {
+        console.log("User response: true (OK)");
+        alert("Awesome! Keep learning!");
+        printToScreen(`[Task 4 Output] confirm() returned: true (User selected OK)`, "success");
+      } else {
+        console.log("User response: false (Cancel)");
+        alert("Keep practicing, it gets easier!");
+        printToScreen(`[Task 4 Output] confirm() returned: false (User selected Cancel)`, "warn");
+      }
+    }
+
+    // Task 5: document.writeln()
+    function task5() {
+      let name = prompt("Enter your name to display on the webpage:");
+      if (name) {
+        const display = document.getElementById("webpageDisplay");
+        display.style.display = "block";
+        display.innerHTML = `<h3>Hello, ${name}! Welcome to JavaScript.</h3><p style="font-size:0.85rem; color:#475569; margin-top:0.3rem;">(Rendered using document webpage output)</p>`;
+        printToScreen(`[Task 5 Output] Rendered greeting for "${name}" on webpage.`, "success");
+      }
+    }
+  </script>
+</body>
+
+</html>
