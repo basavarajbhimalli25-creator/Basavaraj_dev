@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript Practical Tasks Suite</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
     rel="stylesheet">
 
   <style>
@@ -23,6 +24,9 @@
       --code-bg: #0f172a;
       --code-text: #f8fafc;
       --accent-green: #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --accent-red: #ef4444;
     }
 
     * {
@@ -36,19 +40,19 @@
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      padding: 2rem 1rem;
+      padding: 1.5rem 1rem 3rem 1rem;
     }
 
     .container {
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
-    /* Clean Header */
+    /* Header */
     header {
       text-align: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
       border-bottom: 1px solid var(--border);
     }
 
@@ -74,6 +78,67 @@
     p.subtitle {
       color: var(--text-muted);
       font-size: 0.95rem;
+    }
+
+    /* Task Switcher Bar */
+    .task-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      background: #e2e8f0;
+      padding: 0.35rem;
+      border-radius: 10px;
+      flex-wrap: wrap;
+    }
+
+    .switch-btn {
+      flex: 1;
+      min-width: 160px;
+      padding: 0.65rem 1rem;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .switch-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .switch-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Section Sub-Header */
+    .section-banner {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .section-banner h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
     }
 
     /* Practical Tasks List */
@@ -106,12 +171,13 @@
     }
 
     .task-title {
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 600;
       color: var(--text);
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .task-num {
@@ -121,13 +187,14 @@
       font-weight: 700;
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
+      font-family: 'Fira Code', monospace;
     }
 
     .btn-run {
       background-color: var(--primary);
       color: #ffffff;
       border: none;
-      padding: 0.5rem 1.1rem;
+      padding: 0.45rem 1rem;
       border-radius: 6px;
       font-size: 0.85rem;
       font-weight: 600;
@@ -140,6 +207,24 @@
 
     .btn-run:hover {
       background-color: var(--primary-hover);
+    }
+
+    .btn-run-all {
+      background-color: #059669;
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-run-all:hover {
+      background-color: #047857;
     }
 
     .task-desc {
@@ -158,6 +243,7 @@
       font-size: 0.85rem;
       overflow-x: auto;
       border: 1px solid #1e293b;
+      line-height: 1.5;
     }
 
     /* Output Console */
@@ -165,7 +251,7 @@
       background-color: #0f172a;
       border-radius: 10px;
       padding: 1.25rem;
-      margin-top: 1.5rem;
+      margin-top: 1.75rem;
       border: 1px solid #1e293b;
     }
 
@@ -217,14 +303,15 @@
       font-family: 'Fira Code', Consolas, monospace;
       font-size: 0.85rem;
       color: #38bdf8;
-      min-height: 90px;
-      max-height: 200px;
+      min-height: 100px;
+      max-height: 320px;
       overflow-y: auto;
       line-height: 1.6;
     }
 
     .console-line {
       margin-bottom: 0.25rem;
+      word-break: break-word;
     }
 
     .console-line.success {
@@ -235,7 +322,11 @@
       color: #facc15;
     }
 
-    /* Webpage write area */
+    .console-line.calc {
+      color: #c084fc;
+    }
+
+    /* Webpage write area for Task 1.5 */
     #webpageDisplay {
       display: none;
       margin-top: 1.25rem;
@@ -260,16 +351,31 @@
   <div class="container">
     <!-- Header -->
     <header>
-
+      <div class="badge">Stackly JavaScript Training</div>
       <h1>JavaScript Practical Tasks</h1>
-      <p class="subtitle">Interactive implementation of variables, dialogs (alert, prompt, confirm), and console
-        outputs.</p>
+      <p class="subtitle">Interactive testing suite with console logging, prompt dialogs, arithmetic calculations, and increment/decrement operators.</p>
     </header>
 
-    <!-- Practical Tasks List -->
-    <div class="tasks-wrapper">
+    <!-- Task Tab Switcher -->
+    <div class="task-switcher">
+      <button class="switch-btn active" id="tabTask1" onclick="switchTaskTab('task1')">
+        📌 Task 1 (Day 1 Basics)
+      </button>
+      <button class="switch-btn" id="tabTask2" onclick="switchTaskTab('task2')">
+        ⚡ Task 2 (Day 2 Full Suite - 18 Tasks)
+      </button>
+    </div>
 
-      <!-- Practical Task 1 -->
+    <!-- ========================================================= -->
+    <!-- 🟢 SECTION: TASK 1 (DAY 1) -->
+    <!-- ========================================================= -->
+    <div id="task1Section" class="tasks-wrapper">
+      <div class="section-banner">
+        <h2>Assignment 1: Variables, Prompt, Alert, Confirm & Write</h2>
+        <span class="task-num">5 Tasks</span>
+      </div>
+
+      <!-- Task 1.1 -->
       <div class="task-card">
         <div class="task-header">
           <div class="task-title">
@@ -288,7 +394,7 @@ console.log("Student Age :", studentAge);
 console.log("Student Mark:", studentMark);</code></pre>
       </div>
 
-      <!-- Practical Task 2 -->
+      <!-- Task 1.2 -->
       <div class="task-card">
         <div class="task-header">
           <div class="task-title">
@@ -297,15 +403,14 @@ console.log("Student Mark:", studentMark);</code></pre>
           </div>
           <button class="btn-run" onclick="task2()">▶ Run Task 2</button>
         </div>
-        <p class="task-desc">Prompts the user to enter their name in a popup input box, then displays a welcome greeting
-          using <code>alert()</code>.</p>
+        <p class="task-desc">Prompts the user to enter their name in a popup input box, then displays a welcome greeting using <code>alert()</code>.</p>
         <pre><code>let userName = prompt("Enter your name:");
 if (userName) {
     alert("Welcome, " + userName + "!");
 }</code></pre>
       </div>
 
-      <!-- Practical Task 3 -->
+      <!-- Task 1.3 -->
       <div class="task-card">
         <div class="task-header">
           <div class="task-title">
@@ -319,7 +424,7 @@ if (userName) {
 console.log("User Age entered:", userAge);</code></pre>
       </div>
 
-      <!-- Practical Task 4 -->
+      <!-- Task 1.4 -->
       <div class="task-card">
         <div class="task-header">
           <div class="task-title">
@@ -328,8 +433,7 @@ console.log("User Age entered:", userAge);</code></pre>
           </div>
           <button class="btn-run" onclick="task4()">▶ Run Task 4</button>
         </div>
-        <p class="task-desc">Displays a confirmation box (OK / Cancel) and handles the Boolean result (<code>true</code>
-          / <code>false</code>).</p>
+        <p class="task-desc">Displays a confirmation box (OK / Cancel) and handles the Boolean result (<code>true</code> / <code>false</code>).</p>
         <pre><code>let isJavaScriptFun = confirm("Are you enjoying learning JavaScript?");
 if (isJavaScriptFun) {
     console.log("User clicked OK (true)");
@@ -338,7 +442,7 @@ if (isJavaScriptFun) {
 }</code></pre>
       </div>
 
-      <!-- Practical Task 5 -->
+      <!-- Task 1.5 -->
       <div class="task-card">
         <div class="task-header">
           <div class="task-title">
@@ -347,17 +451,319 @@ if (isJavaScriptFun) {
           </div>
           <button class="btn-run" onclick="task5()">▶ Run Task 5</button>
         </div>
-        <p class="task-desc">Asks for user's name with <code>prompt()</code> and renders the greeting onto the document
-          page.</p>
+        <p class="task-desc">Asks for user's name with <code>prompt()</code> and renders the greeting onto the document page.</p>
         <pre><code>let name = prompt("Enter your name to display on the webpage:");
 if (name) {
     document.writeln("&lt;h2&gt;Hello, " + name + "! Welcome to JavaScript.&lt;/h2&gt;");
 }</code></pre>
       </div>
-
     </div>
 
-    <!-- Webpage Display for Task 5 output preview -->
+    <!-- ========================================================= -->
+    <!-- ⚡ SECTION: TASK 2 (DAY 2 - ALL 18 TASKS) -->
+    <!-- ========================================================= -->
+    <div id="task2Section" class="tasks-wrapper" style="display: none;">
+      <div class="section-banner">
+        <div>
+          <h2>Assignment 2: Variables, Data Types, Operators & Challenges</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">17 Core Practical Tasks + Final Calculator Challenge</p>
+        </div>
+        <button class="btn-run-all" onclick="runAllTask2UI()">▶ Run All 18 Tasks</button>
+      </div>
+
+      <!-- T2 - Task 1 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 1</span>
+            var, let, const Variable Rules & Error Observation
+          </div>
+          <button class="btn-run" onclick="t2_task1()">▶ Run Task 1</button>
+        </div>
+        <p class="task-desc">Create <code>var</code> (student name), <code>let</code> (student age), <code>const</code> (college name), reassign values, and observe const / let errors.</p>
+        <pre><code>var studentName = "Naveen";
+let studentAge = 22;
+const collegeName = "National Engineering College";
+
+studentName = "Rahul";
+studentAge = 23;
+// collegeName = "ABC College"; // TypeError: Assignment to constant variable
+var studentName = "Kavitha";   // Allowed in var
+// let studentAge = 24;        // SyntaxError: Identifier already declared</code></pre>
+      </div>
+
+      <!-- T2 - Task 2 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 2</span>
+            User Information via prompt()
+          </div>
+          <button class="btn-run" onclick="t2_task2()">▶ Run Task 2</button>
+        </div>
+        <p class="task-desc">Prompts for Name, Age, City and logs formatted output to the console.</p>
+        <pre><code>var Name = prompt("What is your Name?");
+var Age = prompt("What is your age?");
+var City = prompt("What is your city?");
+
+console.log("Name : " + Name);
+console.log("Age : " + Age);
+console.log("City : " + City);</code></pre>
+      </div>
+
+      <!-- T2 - Task 3 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 3</span>
+            Welcome Message using alert()
+          </div>
+          <button class="btn-run" onclick="t2_task3()">▶ Run Task 3</button>
+        </div>
+        <p class="task-desc">Gets name via <code>prompt()</code> and displays <code>Welcome Naveen!</code> using <code>alert()</code>.</p>
+        <pre><code>var UserName = prompt("What is your Name?");
+alert("Welcome " + UserName + "!");</code></pre>
+      </div>
+
+      <!-- T2 - Task 4 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 4</span>
+            Age Calculator (Current Year - Birth Year)
+          </div>
+          <button class="btn-run" onclick="t2_task4()">▶ Run Task 4</button>
+        </div>
+        <p class="task-desc">Prompts for birth year and calculates age: <code>2026 - birthYear</code>.</p>
+        <pre><code>var currentYear = 2026;
+var birthYear = prompt("What is your birth year?");
+console.log("Birth Year : " + birthYear);
+console.log("Age : " + (currentYear - Number(birthYear)));</code></pre>
+      </div>
+
+      <!-- T2 - Task 5 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 5</span>
+            Identify Data Types using typeof
+          </div>
+          <button class="btn-run" onclick="t2_task5()">▶ Run Task 5</button>
+        </div>
+        <p class="task-desc">Identifies data types of "Hello", 100, 25.5, true, false, undefined, null.</p>
+        <pre><code>console.log(typeof "Hello");     // string
+console.log(typeof 100);         // number
+console.log(typeof 25.5);        // number
+console.log(typeof true);        // boolean
+console.log(typeof false);       // boolean
+console.log(typeof undefined);   // undefined
+console.log(typeof null);        // object</code></pre>
+      </div>
+
+      <!-- T2 - Task 6 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 6</span>
+            Student Data Object
+          </div>
+          <button class="btn-run" onclick="t2_task6()">▶ Run Task 6</button>
+        </div>
+        <p class="task-desc">Creates student object with name, age, city, qualification, isStudent and prints keys.</p>
+        <pre><code>var student = {
+  name: "Naveen",
+  age: 22,
+  city: "Trichy",
+  qualification: ["B.Tech", "M.Tech"],
+  isStudent: true
+};
+console.log(student);
+console.log(student.name);
+console.log(student.age);
+console.log(student.qualification);
+console.log(student.isStudent);</code></pre>
+      </div>
+
+      <!-- T2 - Task 7 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 7</span>
+            Fruit Array & Indexing
+          </div>
+          <button class="btn-run" onclick="t2_task7()">▶ Run Task 7</button>
+        </div>
+        <p class="task-desc">Array with 6 fruits. Prints first, second, last (<code>length - 1</code>), and total length.</p>
+        <pre><code>var fruits = ["Apple", "Mango", "Orange", "Banana", "Grapes", "Papaya"];
+console.log(fruits[0]);
+console.log(fruits[1]);
+console.log(fruits[fruits.length - 1]);
+console.log(fruits.length);</code></pre>
+      </div>
+
+      <!-- T2 - Task 8 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 8</span>
+            Basic Calculator (6 Arithmetic Operators)
+          </div>
+          <button class="btn-run" onclick="t2_task8()">▶ Run Task 8</button>
+        </div>
+        <p class="task-desc">Computes +, -, *, /, %, ** for <code>a = 20, b = 5</code>.</p>
+        <pre><code>let a = 20, b = 5;
+console.log(a + b);   // 25
+console.log(a - b);   // 15
+console.log(a * b);   // 100
+console.log(a / b);   // 4
+console.log(a % b);   // 0
+console.log(a ** b);  // 3200000</code></pre>
+      </div>
+
+      <!-- T2 - Task 9 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 9</span>
+            Shopping Bill
+          </div>
+          <button class="btn-run" onclick="t2_task9()">▶ Run Task 9</button>
+        </div>
+        <p class="task-desc">Calculates total: Shirt (999) + Pant (1499) + Shoes (1999) = 4497.</p>
+        <pre><code>let Shirt = 999;
+let Pant = 1499;
+let Shoes = 1999;
+var total = Shirt + Pant + Shoes;
+console.log("Total = " + total); // 4497</code></pre>
+      </div>
+
+      <!-- T2 - Task 10 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 10</span>
+            Simple Marks Calculation
+          </div>
+          <button class="btn-run" onclick="t2_task10()">▶ Run Task 10</button>
+        </div>
+        <p class="task-desc">Calculates Total and Average for Tamil (80), English (75), Maths (90).</p>
+        <pre><code>let Tamil = 80, English = 75, Maths = 90;
+var totalMarks = Tamil + English + Maths;
+var avg = totalMarks / 3;
+console.log("Total Marks = " + totalMarks);  // 245
+console.log("Average Mark = " + avg);        // 81.67</code></pre>
+      </div>
+
+      <!-- T2 - Tasks 11 to 14 (Increments) -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Tasks 11 — 14</span>
+            Post & Pre Increment/Decrement Operators
+          </div>
+          <button class="btn-run" onclick="t2_tasks11_14()">▶ Verify All 4</button>
+        </div>
+        <p class="task-desc">Predictions & Actual proofs for <code>a++</code>, <code>++a</code>, <code>a--</code>, <code>--a</code>.</p>
+        <pre><code>// Task 11: Post Increment -> a1=11, b1=10
+let a1 = 10; let b1 = a1++;
+
+// Task 12: Pre Increment -> a2=11, b2=11
+let a2 = 10; let b2 = ++a2;
+
+// Task 13: Post Decrement -> a5=19, b5=20
+let a5 = 20; let b5 = a5--;
+
+// Task 14: Pre Decrement -> a3=19, b3=19
+let a3 = 20; let b3 = --a3;</code></pre>
+      </div>
+
+      <!-- T2 - Task 15 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 15</span>
+            Find the Final Values (Tracing Challenge)
+          </div>
+          <button class="btn-run" onclick="t2_task15()">▶ Run Task 15</button>
+        </div>
+        <p class="task-desc">Evaluates multi-step increments: <code>a = 5; b = a++; c = ++a; d = b--;</code></p>
+        <pre><code>let a4 = 5;
+let b4 = a4++;  // b4 = 5, a4 = 6
+let c = ++a4;   // a4 = 7, c = 7
+let d = b4--;   // d = 5, b4 = 4
+
+console.log(a4); // 7
+console.log(b4); // 4
+console.log(c);  // 7
+console.log(d);  // 5</code></pre>
+      </div>
+
+      <!-- T2 - Task 16 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 16</span>
+            Assignment Operators (+=, -=, *=, /=, %=, **=)
+          </div>
+          <button class="btn-run" onclick="t2_task16()">▶ Run Task 16</button>
+        </div>
+        <pre><code>let num = 10;
+num += 5; console.log(num); // 15
+num -= 5; console.log(num); // 10
+num *= 5; console.log(num); // 50
+num /= 5; console.log(num); // 10
+num %= 5; console.log(num); // 0
+num **= 5; console.log(num); // 0</code></pre>
+      </div>
+
+      <!-- T2 - Task 17 -->
+      <div class="task-card">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num">Task 17</span>
+            Mini Student Profile
+          </div>
+          <button class="btn-run" onclick="t2_task17()">▶ Run Task 17</button>
+        </div>
+        <p class="task-desc">Combines variables, array of 5 subjects, and complete profile object.</p>
+        <pre><code>var studentProfileName = "Naveen";
+var studentProfileAge = 22;
+var studentProfileCity = "Trichy";
+var subjects = ["JavaScript", "Python", "Web Technologies", "Database Systems", "Cloud Computing"];
+var studentProfileObj = {
+  name: "Naveen", age: 22, city: "Trichy", subjects: subjects, isStudent: true
+};
+
+console.log("Student Name : " + studentProfileName);
+console.log("First subject : " + subjects[0]);
+console.log("Last subject : " + studentProfileObj.subjects[studentProfileObj.subjects.length - 1]);
+console.log("Total subjects : " + subjects.length);
+console.log(studentProfileObj);</code></pre>
+      </div>
+
+      <!-- T2 - Final Challenge -->
+      <div class="task-card" style="border: 1px solid var(--accent-yellow); background: #fffdf5;">
+        <div class="task-header">
+          <div class="task-title">
+            <span class="task-num" style="background: #fef3c7; color: #92400e;">Final Challenge</span>
+            User Input + Calculator (All 6 Operations)
+          </div>
+          <button class="btn-run" style="background: #d97706;" onclick="t2_finalChallenge()">▶ Prompt Numbers & Calculate</button>
+        </div>
+        <p class="task-desc">Takes 2 numbers via <code>prompt()</code> and displays +, -, *, /, %, ** in console.</p>
+        <pre><code>var userNum1 = Number(prompt("Enter First Number:"));
+var userNum2 = Number(prompt("Enter Second Number:"));
+
+console.log(userNum1 + userNum2);
+console.log(userNum1 - userNum2);
+console.log(userNum1 * userNum2);
+console.log(userNum1 / userNum2);
+console.log(userNum1 % userNum2);
+console.log(userNum1 ** userNum2);</code></pre>
+      </div>
+    </div>
+
+    <!-- Webpage Display for Task 1.5 output preview -->
     <div id="webpageDisplay"></div>
 
     <!-- Live Console Output Box -->
@@ -367,18 +773,19 @@ if (name) {
         <button class="btn-clear" onclick="clearConsole()">Clear</button>
       </div>
       <div id="consoleScreen" class="console-screen">
-        <div class="console-line">> Click any "Run" button above to test the practical code interactively.</div>
+        <div class="console-line">> Click any "Run" button above to test the tasks interactively.</div>
       </div>
     </div>
 
     <footer>
-      <p>JavaScript Basics </p>
+      <p>JavaScript Basics — Stackly Training Suite</p>
     </footer>
   </div>
 
-  <!-- JavaScript Implementation -->
+  <!-- Scripts -->
   <script src="script.js"></script>
   <script src="index.js"></script>
+  <script src="task2.js"></script>
 
   <!-- Interactive runner script -->
   <script>
@@ -394,10 +801,35 @@ if (name) {
 
     function clearConsole() {
       screen.innerHTML = '<div class="console-line">> Console cleared. Ready for next task.</div>';
-      document.getElementById("webpageDisplay").style.display = "none";
+      const webDisp = document.getElementById("webpageDisplay");
+      if (webDisp) webDisp.style.display = "none";
     }
 
-    // Task 1: Student Details
+    // Tab switcher
+    function switchTaskTab(tabName) {
+      const t1Sec = document.getElementById("task1Section");
+      const t2Sec = document.getElementById("task2Section");
+      const t1Btn = document.getElementById("tabTask1");
+      const t2Btn = document.getElementById("tabTask2");
+
+      if (tabName === "task1") {
+        t1Sec.style.display = "flex";
+        t2Sec.style.display = "none";
+        t1Btn.classList.add("active");
+        t2Btn.classList.remove("active");
+        printToScreen("[Tab Switched] Viewing Task 1 (Day 1 Basics)", "warn");
+      } else {
+        t1Sec.style.display = "none";
+        t2Sec.style.display = "flex";
+        t1Btn.classList.remove("active");
+        t2Btn.classList.add("active");
+        printToScreen("[Tab Switched] Viewing Task 2 (Day 2 Full Practice Suite)", "warn");
+      }
+    }
+
+    // ==========================================
+    // TASK 1 RUNNERS
+    // ==========================================
     function task1() {
       let studentName = "Alex Sharma";
       let studentAge = 21;
@@ -411,18 +843,16 @@ if (name) {
       printToScreen(`[Task 1 Output] Student Name: "${studentName}" | Age: ${studentAge} | Mark: ${studentMark}`, "success");
     }
 
-    // Task 2: prompt() and alert()
     function task2() {
       let userName = prompt("Enter your name:");
       if (userName) {
         alert("Welcome, " + userName + "!");
         printToScreen(`[Task 2 Output] alert("Welcome, ${userName}!") displayed successfully.`, "success");
       } else {
-        printToScreen(`[Task 2 Output] prompt() cancelled or no name entered.`, "warn");
+        printToScreen(`[Task 2 Output] prompt() cancelled.`, "warn");
       }
     }
 
-    // Task 3: prompt() and console.log()
     function task3() {
       let userAge = prompt("Enter your age:");
       if (userAge !== null && userAge.trim() !== "") {
@@ -433,7 +863,6 @@ if (name) {
       }
     }
 
-    // Task 4: confirm()
     function task4() {
       let isJavaScriptFun = confirm("Are you enjoying learning JavaScript?");
       if (isJavaScriptFun) {
@@ -447,7 +876,6 @@ if (name) {
       }
     }
 
-    // Task 5: document.writeln()
     function task5() {
       let name = prompt("Enter your name to display on the webpage:");
       if (name) {
@@ -456,6 +884,182 @@ if (name) {
         display.innerHTML = `<h3>Hello, ${name}! Welcome to JavaScript.</h3><p style="font-size:0.85rem; color:#475569; margin-top:0.3rem;">(Rendered using document webpage output)</p>`;
         printToScreen(`[Task 5 Output] Rendered greeting for "${name}" on webpage.`, "success");
       }
+    }
+
+    // ==========================================
+    // TASK 2 RUNNERS
+    // ==========================================
+    function t2_task1() {
+      var studentName = "Naveen";
+      let studentAge = 22;
+      const collegeName = "National Engineering College";
+      console.log("Task 1 Initial:", studentName, studentAge, collegeName);
+
+      studentName = "Rahul";
+      studentAge = 23;
+      var studentName = "Kavitha";
+
+      printToScreen(`[T2 - Task 1] var: "${studentName}" | let: ${studentAge} | const: "${collegeName}"`, "success");
+      printToScreen(`[T2 - Task 1] Const assignment throws TypeError; Let redeclaration throws SyntaxError.`, "warn");
+    }
+
+    function t2_task2() {
+      var Name = prompt("What is your Name?", "Naveen");
+      var Age = prompt("What is your age?", "22");
+      var City = prompt("What is your city?", "Trichy");
+
+      if (Name !== null) {
+        console.log("Name : " + Name);
+        console.log("Age : " + Age);
+        console.log("City : " + City);
+        printToScreen(`[T2 - Task 2] Name: ${Name} | Age: ${Age} | City: ${City}`, "success");
+      }
+    }
+
+    function t2_task3() {
+      var UserName = prompt("What is your Name?", "Naveen");
+      if (UserName) {
+        alert("Welcome " + UserName + "!");
+        console.log("Welcome " + UserName + "!");
+        printToScreen(`[T2 - Task 3] alert("Welcome ${UserName}!") displayed.`, "success");
+      }
+    }
+
+    function t2_task4() {
+      var currentYear = 2026;
+      var birthYear = prompt("What is your birth year?", "2000");
+      if (birthYear) {
+        var age = currentYear - Number(birthYear);
+        console.log("Birth Year : " + birthYear);
+        console.log("Age : " + age);
+        printToScreen(`[T2 - Task 4] Birth Year: ${birthYear} | Calculated Age: ${age}`, "success");
+      }
+    }
+
+    function t2_task5() {
+      printToScreen(`[T2 - Task 5] typeof "Hello" -> string | typeof 100 -> number | typeof 25.5 -> number`, "success");
+      printToScreen(`[T2 - Task 5] typeof true -> boolean | typeof undefined -> undefined | typeof null -> object`, "success");
+    }
+
+    function t2_task6() {
+      var student = {
+        name: "Naveen",
+        age: 22,
+        city: "Trichy",
+        qualification: ["B.Tech", "M.Tech"],
+        isStudent: true
+      };
+      console.log(student);
+      printToScreen(`[T2 - Task 6] Student: ${student.name}, Age: ${student.age}, City: ${student.city}, isStudent: ${student.isStudent}`, "success");
+    }
+
+    function t2_task7() {
+      var fruits = ["Apple", "Mango", "Orange", "Banana", "Grapes", "Papaya"];
+      console.log(fruits);
+      printToScreen(`[T2 - Task 7] 1st: ${fruits[0]} | 2nd: ${fruits[1]} | Last: ${fruits[fruits.length - 1]} | Total: ${fruits.length}`, "success");
+    }
+
+    function t2_task8() {
+      let a = 20, b = 5;
+      console.log("a+b:", a+b, "a-b:", a-b, "a*b:", a*b, "a/b:", a/b, "a%b:", a%b, "a**b:", a**b);
+      printToScreen(`[T2 - Task 8] (20, 5) -> Add: 25 | Sub: 15 | Mul: 100 | Div: 4 | Mod: 0 | Pow: 3200000`, "calc");
+    }
+
+    function t2_task9() {
+      let Shirt = 999, Pant = 1499, Shoes = 1999;
+      var total = Shirt + Pant + Shoes;
+      console.log("Total = " + total);
+      printToScreen(`[T2 - Task 9] Shopping Bill: Shirt(999) + Pant(1499) + Shoes(1999) -> Total = ₹${total}`, "success");
+    }
+
+    function t2_task10() {
+      let Tamil = 80, English = 75, Maths = 90;
+      var totalMarks = Tamil + English + Maths;
+      var avg = totalMarks / 3;
+      console.log("Total Marks = " + totalMarks, "Average Mark = " + avg);
+      printToScreen(`[T2 - Task 10] Total Marks: ${totalMarks} | Average Mark: ${avg.toFixed(2)}`, "success");
+    }
+
+    function t2_tasks11_14() {
+      let a1 = 10; let b1 = a1++;
+      let a2 = 10; let b2 = ++a2;
+      let a5 = 20; let b5 = a5--;
+      let a3 = 20; let b3 = --a3;
+
+      printToScreen(`[T2 - Task 11] Post-Increment (a1++): a1 = ${a1}, b1 = ${b1}`, "calc");
+      printToScreen(`[T2 - Task 12] Pre-Increment (++a2): a2 = ${a2}, b2 = ${b2}`, "calc");
+      printToScreen(`[T2 - Task 13] Post-Decrement (a5--): a5 = ${a5}, b5 = ${b5}`, "calc");
+      printToScreen(`[T2 - Task 14] Pre-Decrement (--a3): a3 = ${a3}, b3 = ${b3}`, "calc");
+    }
+
+    function t2_task15() {
+      let a4 = 5;
+      let b4 = a4++;
+      let c = ++a4;
+      let d = b4--;
+      console.log(a4, b4, c, d);
+      printToScreen(`[T2 - Task 15 Final Values] a = ${a4}, b = ${b4}, c = ${c}, d = ${d}`, "success");
+    }
+
+    function t2_task16() {
+      let num = 10;
+      num += 5;
+      num -= 5;
+      num *= 5;
+      num /= 5;
+      num %= 5;
+      num **= 5;
+      printToScreen(`[T2 - Task 16 Assignment Ops] num tested through +=, -=, *=, /=, %=, **= -> Final: ${num}`, "calc");
+    }
+
+    function t2_task17() {
+      var studentProfileName = "Naveen";
+      var studentProfileAge = 22;
+      var studentProfileCity = "Trichy";
+      var subjects = ["JavaScript", "Python", "Web Technologies", "Database Systems", "Cloud Computing"];
+      var studentProfileObj = {
+        name: "Naveen",
+        age: 22,
+        city: "Trichy",
+        subjects: subjects,
+        isStudent: true
+      };
+      console.log(studentProfileObj);
+      printToScreen(`[T2 - Task 17 Profile] Name: ${studentProfileName} | 1st Sub: ${subjects[0]} | Last Sub: ${subjects[subjects.length - 1]} | Total Subs: ${subjects.length}`, "success");
+    }
+
+    function t2_finalChallenge() {
+      var userNum1 = Number(prompt("Enter First Number:", "10"));
+      var userNum2 = Number(prompt("Enter Second Number:", "5"));
+
+      if (!isNaN(userNum1) && !isNaN(userNum2)) {
+        console.log("Add:", userNum1 + userNum2);
+        console.log("Sub:", userNum1 - userNum2);
+        console.log("Mul:", userNum1 * userNum2);
+        console.log("Div:", userNum1 / userNum2);
+        console.log("Mod:", userNum1 % userNum2);
+        console.log("Pow:", userNum1 ** userNum2);
+
+        printToScreen(`[T2 - Final Challenge Calculator (${userNum1}, ${userNum2})]`, "calc");
+        printToScreen(`Add: ${userNum1 + userNum2} | Sub: ${userNum1 - userNum2} | Mul: ${userNum1 * userNum2} | Div: ${userNum1 / userNum2} | Mod: ${userNum1 % userNum2} | Pow: ${userNum1 ** userNum2}`, "success");
+      }
+    }
+
+    function runAllTask2UI() {
+      clearConsole();
+      printToScreen("🚀 Running all Task 2 exercises...", "warn");
+      t2_task1();
+      t2_task5();
+      t2_task6();
+      t2_task7();
+      t2_task8();
+      t2_task9();
+      t2_task10();
+      t2_tasks11_14();
+      t2_task15();
+      t2_task16();
+      t2_task17();
+      printToScreen("✅ All non-prompt tasks completed in console and screen!", "success");
     }
   </script>
 </body>
